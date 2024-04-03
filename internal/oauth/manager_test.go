@@ -120,7 +120,7 @@ func TestManager_AddAuthorization(t *testing.T) {
 			args: args{
 				req: httptest.NewRequest(http.MethodPost, "https://www.google.com/hello", nil),
 			},
-			want: "bearer this is the access token",
+			want: "Bearer this is the access token",
 		},
 	}
 	for _, tt := range tests {

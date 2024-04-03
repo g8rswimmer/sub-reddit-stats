@@ -108,11 +108,10 @@ func (m *Manager) setToken(ar *accessResponse) time.Duration {
 func (m *Manager) AddAuthorization(req *http.Request) {
 	m.mutex.RLock()
 	defer m.mutex.RUnlock()
-	auth := fmt.Sprintf("%s %s", m.accessResponse.TokenType, m.accessResponse.AccessToken)
+	auth := fmt.Sprintf("Bearer %s", m.accessResponse.AccessToken)
 	req.Header.Add("Authorization", auth)
 }
 
 func (m *Manager) Shutdown() {
 	close(m.done)
-	slog.Info("oauth manager shutting down")
 }
