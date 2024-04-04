@@ -224,7 +224,7 @@ func TestClient_SubredditListingNew(t *testing.T) {
 				Kind: "Listing",
 				Data: model.RedditListingData{
 					After: "t3_1bv8ijk",
-					Children: []model.SubrredditChild{
+					Children: []model.SubredditChild{
 						{
 							Kind: "t3",
 							Data: model.SubredditData{

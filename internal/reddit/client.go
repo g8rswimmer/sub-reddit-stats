@@ -44,10 +44,6 @@ func (c *Client) SubredditListingNew(ctx context.Context, subreddit string, para
 	}
 	defer resp.Body.Close()
 
-	for k, v := range resp.Header {
-		fmt.Println(k, v)
-	}
-
 	rateLimit := rateLimiting(resp)
 
 	if resp.StatusCode != http.StatusOK {

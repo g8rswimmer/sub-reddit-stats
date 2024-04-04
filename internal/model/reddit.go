@@ -9,12 +9,12 @@ type RedditListing struct {
 }
 
 type RedditListingData struct {
-	After    string            `json:"after"`
-	Before   string            `json:"before"`
-	Children []SubrredditChild `json:"children"`
+	After    string           `json:"after"`
+	Before   string           `json:"before"`
+	Children []SubredditChild `json:"children"`
 }
 
-type SubrredditChild struct {
+type SubredditChild struct {
 	Kind string        `json:"kind"`
 	Data SubredditData `json:"data"`
 }

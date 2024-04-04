@@ -6,15 +6,15 @@ import (
 )
 
 const (
-	beforeParam = "before"
-	limitParam  = "limit"
+	afterParam = "after"
+	limitParam = "limit"
 )
 
 type Params func(url.Values)
 
-func WithBefore(before string) Params {
+func WithAfter(after string) Params {
 	return func(v url.Values) {
-		v.Add(beforeParam, before)
+		v.Add(afterParam, after)
 	}
 }
 
