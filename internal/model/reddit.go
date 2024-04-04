@@ -23,7 +23,7 @@ type SubredditData struct {
 	Title               string  `json:"title"`
 	Downs               int     `json:"downs"`
 	UpvoteRatio         float64 `json:"upvote_ratio"`
-	Ups                 int     `json:"up"`
+	Ups                 int     `json:"ups"`
 	TotalAwardsReceived int     `json:"total_awards_received"`
 	Name                string  `json:"name"`
 	Subreddit           string  `json:"subreddit"`

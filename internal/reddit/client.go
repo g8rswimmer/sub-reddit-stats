@@ -23,7 +23,7 @@ type Client struct {
 	HTTPClient *http.Client
 }
 
-func (c *Client) SubredditListingNow(ctx context.Context, subreddit string, params ...Params) (*model.RedditListing, error) {
+func (c *Client) SubredditListingNew(ctx context.Context, subreddit string, params ...Params) (*model.RedditListing, error) {
 	ep := fmt.Sprintf(subredditListingEndpoint, subreddit)
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, c.BaseURL+ep, nil)
 	if err != nil {
