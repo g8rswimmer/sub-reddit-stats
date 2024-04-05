@@ -7,6 +7,9 @@ init_db:
 
 clean_db:
 	rm -r db
-	
+
 migrate:
 	go run cmd/migration/*.go
+
+proto_gen_go:
+	protoc -I . --go_out=./internal/proto --go-grpc_out=require_unimplemented_servers=false:./internal/proto $$(find protos -name "*.proto")

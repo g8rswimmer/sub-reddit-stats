@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package reddit.v1;
+
+option go_package = "./redditv1;redditv1";
+
+service RedditService {
+    rpc GetSubredditMostUps(GetSubredditMostUpsRequest) returns (GetSubredditMostUpsResponse);
+}
+
+message GetSubredditMostUpsRequest {
+    string subreddit = 1;
+    int32 limit = 2;
+}
+
+message GetSubredditMostUpsResponse {
+    repeated SubredditListing subreddit_listings = 1;
+}
+
+message SubredditListing {
+	string title = 1;
+	int32 downs = 2;
+	float upvote_ratio = 3;
+	int32 ups = 4;
+	int32 total_awardsReceived = 5;
+	string name = 6;
+	string subreddit = 7;
+	string id = 8;
+	string author = 9;
+	string author_fullname = 10;
+   
+}
