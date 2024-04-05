@@ -5,5 +5,8 @@ gen_mocks:
 init_db:
 	mkdir db && touch db/sqlite-database.db
 
+clean_db:
+	rm -r db
+	
 migrate:
 	go run cmd/migration/*.go

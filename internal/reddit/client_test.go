@@ -237,6 +237,7 @@ func TestClient_SubredditListingNew(t *testing.T) {
 								Subreddit:           "funny",
 								ID:                  "1bv8ijk",
 								Author:              "dbzcat",
+								AuthorFullname:      "t2_hfs25",
 							},
 						},
 					},
