@@ -20,15 +20,16 @@ type SubredditChild struct {
 }
 
 type SubredditData struct {
-	Title               string  `json:"title"`
-	Downs               int     `json:"downs"`
-	UpvoteRatio         float64 `json:"upvote_ratio"`
-	Ups                 int     `json:"ups"`
-	TotalAwardsReceived int     `json:"total_awards_received"`
-	Name                string  `json:"name"`
-	Subreddit           string  `json:"subreddit"`
-	ID                  string  `json:"id"`
-	Author              string  `json:"author"`
+	Title               string  `json:"title" db:"TITLE"`
+	Downs               int     `json:"downs" db:"DOWNS"`
+	UpvoteRatio         float64 `json:"upvote_ratio" db:"UPVOTE_RATIO"`
+	Ups                 int     `json:"ups" db:"UPS"`
+	TotalAwardsReceived int     `json:"total_awards_received" db:"TOTAL_AWARDS"`
+	Name                string  `json:"name" db:"NAME"`
+	Subreddit           string  `json:"subreddit" db:"SUBREDDIT"`
+	ID                  string  `json:"id" db:"ID"`
+	Author              string  `json:"author" db:"AUTHOR"`
+	AuthorFullname      string  `json:"author_fullname" db:"AUTHOR_FULLNAME"`
 }
 
 type RateLimiting struct {
