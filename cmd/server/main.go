@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"log/slog"
 	"net"
 	"os"
 	"os/signal"
@@ -18,6 +19,7 @@ import (
 )
 
 func main() {
+	slog.Info("starting server init...")
 	db, err := datastore.Open("./db/sqlite-database.db")
 	if err != nil {
 		panic(err)
@@ -40,6 +42,7 @@ func main() {
 	redditv1.RegisterRedditServiceServer(gServer, srv)
 
 	go func() {
+		slog.Info("starting gRPC server...")
 		if err := gRPCRun(gServer, 5050); !errors.Is(err, grpc.ErrServerStopped) && err != nil {
 			panic(err)
 		}
@@ -50,7 +53,7 @@ func main() {
 	<-sigs
 
 	gServer.GracefulStop()
-
+	slog.Info("stoping gRPC server...")
 }
 
 func gRPCRun(s *grpc.Server, port int) error {
