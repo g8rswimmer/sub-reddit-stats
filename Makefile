@@ -17,4 +17,10 @@ daemon:
 	go run cmd/daemon/*.go
 
 proto_gen_go:
-	protoc -I . --go_out=./internal/proto --go-grpc_out=require_unimplemented_servers=false:./internal/proto $$(find protos -name "*.proto")
+	protoc -I . -I protos/ --go_out=./internal/proto --go-grpc_out=require_unimplemented_servers=false:./internal/proto $$(find protos/reddit -name "*.proto")
+
+proto_gateway:
+	protoc -I . -I protos/ --grpc-gateway_out=logtostderr=true:./internal/proto $$(find protos/reddit -name "*.proto")
+
+proto_swagger:
+	protoc -I . -I protos/ --openapiv2_out=json_names_for_fields=false,logtostderr=true,include_package_in_tags=true:./swagger $$(find protos/reddit -name "*.proto")

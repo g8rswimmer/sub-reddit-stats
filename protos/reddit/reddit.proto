@@ -4,8 +4,14 @@ package reddit.v1;
 
 option go_package = "./redditv1;redditv1";
 
+import "google/api/annotations.proto";
+
 service RedditService {
-    rpc GetSubredditMostUps(GetSubredditMostUpsRequest) returns (GetSubredditMostUpsResponse);
+    rpc GetSubredditMostUps(GetSubredditMostUpsRequest) returns (GetSubredditMostUpsResponse) {
+		option (google.api.http) = {
+			get: "/subreddit/{subreddit}/ups"
+		};
+	}
 }
 
 message GetSubredditMostUpsRequest {

@@ -1,10 +1,12 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"log/slog"
 	"net"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
@@ -14,8 +16,13 @@ import (
 	"github.com/g8rswimmer/sub-reddit-stats/internal/manager"
 	"github.com/g8rswimmer/sub-reddit-stats/internal/proto/redditv1"
 	"github.com/g8rswimmer/sub-reddit-stats/internal/service"
+	"github.com/gorilla/mux"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"github.com/mvrilo/go-redoc"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/keepalive"
+	"google.golang.org/protobuf/encoding/protojson"
 )
 
 func main() {
@@ -41,9 +48,21 @@ func main() {
 	gServer := gRPCServer()
 	redditv1.RegisterRedditServiceServer(gServer, srv)
 
+	srvr, err := setUpHTTPServer(context.Background())
+	if err != nil {
+		panic(err)
+	}
+
 	go func() {
 		slog.Info("starting gRPC server...")
 		if err := gRPCRun(gServer, 5050); !errors.Is(err, grpc.ErrServerStopped) && err != nil {
+			panic(err)
+		}
+	}()
+
+	go func() {
+		slog.Info("starting HTTP server...")
+		if err := srvr.ListenAndServe(); !errors.Is(err, http.ErrServerClosed) && err != nil {
 			panic(err)
 		}
 	}()
@@ -52,8 +71,11 @@ func main() {
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
 	<-sigs
 
-	gServer.GracefulStop()
+	slog.Info("stopping HTTP server...")
+	srvr.Shutdown(context.Background())
+
 	slog.Info("stoping gRPC server...")
+	gServer.GracefulStop()
 }
 
 func gRPCRun(s *grpc.Server, port int) error {
@@ -74,4 +96,62 @@ func gRPCServer() *grpc.Server {
 	}
 
 	return grpc.NewServer(opts...)
+}
+
+func gatewayMux() *runtime.ServeMux {
+	return runtime.NewServeMux(
+		runtime.WithMarshalerOption(runtime.MIMEWildcard, &runtime.JSONPb{
+			MarshalOptions: protojson.MarshalOptions{
+				UseProtoNames:   true,
+				EmitUnpopulated: true,
+			},
+			UnmarshalOptions: protojson.UnmarshalOptions{
+				DiscardUnknown: true,
+			},
+		}),
+	)
+}
+
+func setUpRouter(ctx context.Context) (*mux.Router, error) {
+	router := mux.NewRouter().StrictSlash(true)
+	rmux := gatewayMux()
+	router.PathPrefix("/").Handler(rmux)
+
+	swagger := redoc.Redoc{
+		Title:       "Subreddit",
+		Description: "Subreddit Stats",
+		SpecFile:    "./swagger/protos/reddit/reddit.swagger.json",
+		SpecPath:    "/docs/reddit.json",
+	}
+	rmux.HandlePath(http.MethodGet, "/docs", func(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
+		swagger.Handler().ServeHTTP(w, r)
+	})
+	rmux.HandlePath(http.MethodGet, "/docs/reddit.json", func(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
+		swagger.Handler().ServeHTTP(w, r)
+	})
+
+	opts := []grpc.DialOption{
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+	}
+
+	if err := redditv1.RegisterRedditServiceHandlerFromEndpoint(ctx, rmux, fmt.Sprintf("localhost:%d", 5050), opts); err != nil {
+		return nil, fmt.Errorf("reddit service handler from endpoint err: %w", err)
+	}
+
+	return router, nil
+}
+
+func setUpHTTPServer(ctx context.Context) (*http.Server, error) {
+	router, err := setUpRouter(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &http.Server{
+		Addr:              fmt.Sprintf(":%d", 8080),
+		ReadHeaderTimeout: 10 * time.Second,
+		ReadTimeout:       20 * time.Second,
+		WriteTimeout:      20 * time.Second,
+		Handler:           router,
+	}, nil
 }
