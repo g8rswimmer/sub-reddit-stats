@@ -14,10 +14,10 @@ message GetSubredditMostUpsRequest {
 }
 
 message GetSubredditMostUpsResponse {
-    repeated SubredditListing subreddit_listings = 1;
+    repeated SubredditData subreddit_posts = 1;
 }
 
-message SubredditListing {
+message SubredditData {
 	string title = 1;
 	int32 downs = 2;
 	float upvote_ratio = 3;

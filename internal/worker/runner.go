@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/g8rswimmer/sub-reddit-stats/internal/errorx"
 	"github.com/g8rswimmer/sub-reddit-stats/internal/model"
 	"github.com/g8rswimmer/sub-reddit-stats/internal/reddit"
 )
@@ -84,7 +85,7 @@ func (r *Runner) presistSubredditListings(children []model.SubredditChild) error
 func (r *Runner) handleSubredditListing(subreddit string) (*model.RedditListing, error) {
 	retries := maxRetries
 	for retries > 0 {
-		var httpErr *model.HTTPError
+		var httpErr *errorx.HTTPError
 
 		backoff := time.Millisecond * 100
 

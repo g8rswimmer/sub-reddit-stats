@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/g8rswimmer/sub-reddit-stats/internal/errorx"
 	"github.com/g8rswimmer/sub-reddit-stats/internal/model"
 )
 
@@ -47,7 +48,7 @@ func (c *Client) SubredditListingNew(ctx context.Context, subreddit string, para
 	rateLimit := rateLimiting(resp)
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, &model.HTTPError{
+		return nil, &errorx.HTTPError{
 			StatusCode:   resp.StatusCode,
 			RateLimiting: rateLimit,
 		}

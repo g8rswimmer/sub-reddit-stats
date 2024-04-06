@@ -1,6 +1,8 @@
 
 gen_mocks:
 	mockgen -source=internal/worker/runner.go -destination=internal/worker/mock_runner_test.go -package=worker
+	mockgen -source=internal/manager/reddit.go -destination=internal/manager/mock_reddit_test.go -package=manager
+	mockgen -source=internal/service/reddit.go -destination=internal/service/mock_reddit_test.go -package=service
 
 init_db:
 	mkdir db && touch db/sqlite-database.db
@@ -10,6 +12,9 @@ clean_db:
 
 migrate:
 	go run cmd/migration/*.go
+
+daemon:
+	go run cmd/daemon/*.go
 
 proto_gen_go:
 	protoc -I . --go_out=./internal/proto --go-grpc_out=require_unimplemented_servers=false:./internal/proto $$(find protos -name "*.proto")

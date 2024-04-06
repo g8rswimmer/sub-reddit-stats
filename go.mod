@@ -3,6 +3,7 @@ module github.com/g8rswimmer/sub-reddit-stats
 go 1.22.1
 
 require (
+	github.com/google/go-cmp v0.6.0
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/mattn/go-sqlite3 v1.14.22
 	github.com/stretchr/testify v1.9.0

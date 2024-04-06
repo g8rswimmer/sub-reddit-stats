@@ -1,10 +1,14 @@
-package model
+package errorx
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/g8rswimmer/sub-reddit-stats/internal/model"
+)
 
 type HTTPError struct {
 	StatusCode   int
-	RateLimiting *RateLimiting
+	RateLimiting *model.RateLimiting
 }
 
 func (h *HTTPError) Error() string {

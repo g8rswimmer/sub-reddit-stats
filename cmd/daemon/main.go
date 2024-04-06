@@ -16,6 +16,7 @@ import (
 )
 
 func main() {
+	slog.Info("starting daemon init....")
 	db, err := datastore.Open("./db/sqlite-database.db")
 	if err != nil {
 		panic(err)
@@ -46,6 +47,7 @@ func main() {
 	}
 	defer runner.Shutdown()
 
+	slog.Info("starting daemon runner...")
 	runnerErr := runner.Start("funny")
 
 	sigs := make(chan os.Signal, 1)
@@ -56,6 +58,6 @@ func main() {
 		slog.Error("runner error", "error", e.Error())
 	case <-sigs:
 	}
-	slog.Info("example stopped")
+	slog.Info("daemon stopped....")
 
 }
