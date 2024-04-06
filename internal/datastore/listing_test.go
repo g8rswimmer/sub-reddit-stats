@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestPresister_StoreListing(t *testing.T) {
+func TestPresister_Store(t *testing.T) {
 	type args struct {
 		children []model.SubredditChild
 	}
@@ -111,12 +111,12 @@ func TestPresister_StoreListing(t *testing.T) {
 			assert.NoError(t, err)
 			defer db.Close()
 
-			p := &Presister{
+			p := &Listing{
 				DB: db,
 			}
 
-			if err := p.StoreListing(context.Background(), tt.args.children); (err != nil) != tt.wantErr {
-				t.Errorf("Presister.StoreListing() error = %v, wantErr %v", err, tt.wantErr)
+			if err := p.Store(context.Background(), tt.args.children); (err != nil) != tt.wantErr {
+				t.Errorf("Presister.Store() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 
@@ -149,7 +149,7 @@ func TestPresister_StoreListing(t *testing.T) {
 	}
 }
 
-func TestPresister_ListingUps(t *testing.T) {
+func TestPresister_SubredditUps(t *testing.T) {
 	type seed struct {
 		children []model.SubredditChild
 	}
@@ -260,18 +260,18 @@ func TestPresister_ListingUps(t *testing.T) {
 			assert.NoError(t, err)
 			defer db.Close()
 
-			p := &Presister{
+			p := &Listing{
 				DB: db,
 			}
 
-			if err := p.StoreListing(context.Background(), tt.seed.children); (err != nil) != tt.wantErr {
-				t.Errorf("Presister.ListingUps() error = %v, wantErr %v", err, tt.wantErr)
+			if err := p.Store(context.Background(), tt.seed.children); (err != nil) != tt.wantErr {
+				t.Errorf("Presister.SubredditUps() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 
-			got, err := p.ListingUps(context.Background(), tt.args.subreddit, tt.args.limit)
+			got, err := p.SubredditUps(context.Background(), tt.args.subreddit, tt.args.limit)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("Presister.ListingUps() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("Presister.SubredditUps() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			assert.Equal(t, tt.want, got)

@@ -40,17 +40,17 @@ func (m *MockFetcher) EXPECT() *MockFetcherMockRecorder {
 	return m.recorder
 }
 
-// ListingUps mocks base method.
-func (m *MockFetcher) ListingUps(ctx context.Context, subreddit string, limit int) ([]model.SubredditData, error) {
+// SubredditUps mocks base method.
+func (m *MockFetcher) SubredditUps(ctx context.Context, subreddit string, limit int) ([]model.SubredditData, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ListingUps", ctx, subreddit, limit)
+	ret := m.ctrl.Call(m, "SubredditUps", ctx, subreddit, limit)
 	ret0, _ := ret[0].([]model.SubredditData)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// ListingUps indicates an expected call of ListingUps.
-func (mr *MockFetcherMockRecorder) ListingUps(ctx, subreddit, limit any) *gomock.Call {
+// SubredditUps indicates an expected call of SubredditUps.
+func (mr *MockFetcherMockRecorder) SubredditUps(ctx, subreddit, limit any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListingUps", reflect.TypeOf((*MockFetcher)(nil).ListingUps), ctx, subreddit, limit)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SubredditUps", reflect.TypeOf((*MockFetcher)(nil).SubredditUps), ctx, subreddit, limit)
 }

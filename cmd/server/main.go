@@ -33,7 +33,7 @@ func main() {
 	}
 	defer db.Close()
 
-	fetcher := &datastore.Presister{
+	fetcher := &datastore.Listing{
 		DB: db,
 	}
 

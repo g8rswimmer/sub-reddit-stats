@@ -37,7 +37,7 @@ func main() {
 			Timeout: 10 * time.Second,
 		},
 	}
-	presist := &datastore.Presister{
+	presist := &datastore.Listing{
 		DB: db,
 	}
 

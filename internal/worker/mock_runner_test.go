@@ -41,18 +41,18 @@ func (m *MockPresister) EXPECT() *MockPresisterMockRecorder {
 	return m.recorder
 }
 
-// StoreListing mocks base method.
-func (m *MockPresister) StoreListing(ctx context.Context, children []model.SubredditChild) error {
+// Store mocks base method.
+func (m *MockPresister) Store(ctx context.Context, children []model.SubredditChild) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "StoreListing", ctx, children)
+	ret := m.ctrl.Call(m, "Store", ctx, children)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// StoreListing indicates an expected call of StoreListing.
-func (mr *MockPresisterMockRecorder) StoreListing(ctx, children any) *gomock.Call {
+// Store indicates an expected call of Store.
+func (mr *MockPresisterMockRecorder) Store(ctx, children any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "StoreListing", reflect.TypeOf((*MockPresister)(nil).StoreListing), ctx, children)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Store", reflect.TypeOf((*MockPresister)(nil).Store), ctx, children)
 }
 
 // MockRedditLister is a mock of RedditLister interface.

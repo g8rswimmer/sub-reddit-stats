@@ -11,7 +11,7 @@ import (
 )
 
 type Fetcher interface {
-	ListingUps(ctx context.Context, subreddit string, limit int) ([]model.SubredditData, error)
+	SubredditUps(ctx context.Context, subreddit string, limit int) ([]model.SubredditData, error)
 }
 
 type Reddit struct {
@@ -20,7 +20,7 @@ type Reddit struct {
 
 func (r *Reddit) SubredditMostUps(ctx context.Context, subreddit string, limit int) ([]*redditv1.SubredditData, error) {
 
-	data, err := r.Fetcher.ListingUps(ctx, subreddit, limit)
+	data, err := r.Fetcher.SubredditUps(ctx, subreddit, limit)
 	if err != nil {
 		return nil, errors.Join(err, errorx.ErrDatabase)
 	}

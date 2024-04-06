@@ -43,7 +43,7 @@ func TestReddit_SubredditMostUps(t *testing.T) {
 							Author:              "dbzcat",
 						},
 					}
-					m.EXPECT().ListingUps(gomock.Any(), "funny", 1).Return(r, nil)
+					m.EXPECT().SubredditUps(gomock.Any(), "funny", 1).Return(r, nil)
 					return m
 				},
 			},

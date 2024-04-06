@@ -21,7 +21,7 @@ const (
 var errRetrieveListing = errors.New("error retrieving listing")
 
 type Presister interface {
-	StoreListing(ctx context.Context, children []model.SubredditChild) error
+	Store(ctx context.Context, children []model.SubredditChild) error
 }
 
 type RedditLister interface {
@@ -79,7 +79,7 @@ func (r *Runner) process(subreddit string) (time.Duration, error) {
 func (r *Runner) presistSubredditListings(children []model.SubredditChild) error {
 	ctx, cancel := context.WithTimeout(context.Background(), ctxTO)
 	defer cancel()
-	return r.Presister.StoreListing(ctx, children)
+	return r.Presister.Store(ctx, children)
 }
 
 func (r *Runner) handleSubredditListing(subreddit string) (*model.RedditListing, error) {

@@ -10,11 +10,11 @@ import (
 
 const defaultLimit = 5
 
-type Presister struct {
+type Listing struct {
 	DB *sqlx.DB
 }
 
-func (p *Presister) StoreListing(ctx context.Context, children []model.SubredditChild) error {
+func (p *Listing) Store(ctx context.Context, children []model.SubredditChild) error {
 
 	listings := make([]model.SubredditData, len(children))
 	for i := range children {
@@ -27,7 +27,7 @@ func (p *Presister) StoreListing(ctx context.Context, children []model.Subreddit
 	return nil
 }
 
-func (p *Presister) ListingUps(ctx context.Context, subreddit string, limit int) ([]model.SubredditData, error) {
+func (p *Listing) SubredditUps(ctx context.Context, subreddit string, limit int) ([]model.SubredditData, error) {
 	if limit <= 0 {
 		limit = defaultLimit
 	}

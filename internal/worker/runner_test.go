@@ -77,7 +77,7 @@ func TestRunner_process(t *testing.T) {
 							},
 						},
 					}
-					m.EXPECT().StoreListing(gomock.Any(), children).Return(nil)
+					m.EXPECT().Store(gomock.Any(), children).Return(nil)
 					return m
 				},
 			},
