@@ -7,9 +7,9 @@ import (
 )
 
 const (
-	rateLimitingRemaining = "x-ratelimit-remaining"
-	rateLimitingUsed      = "x-ratelimit-used"
-	rateLimitingReset     = "x-ratelimit-reset"
+	rateLimitingRemaining = "X-Ratelimit-Remaining"
+	rateLimitingUsed      = "X-Ratelimit-Used"
+	rateLimitingReset     = "X-Ratelimit-Reset"
 )
 
 func rateLimiting(resp *http.Response) *RateLimiting {

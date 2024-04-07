@@ -1,8 +1,8 @@
 # sub-reddit-stats
-This application is a couple of services to retrieve subnreddit data and return it to the user.
+This application is a couple of services to retrieve subreddit data and return it to the user.
 
 ## Services
-The applicaiton uses multiple services to retrieve the data and to serve it a user.  The use of multiple services allows for seperation of responsiblities and for some scaling if desired.
+The application uses multiple services to retrieve the data and to serve it a user.  The use of multiple services allows for seperation of responsiblities and for some scaling if desired.
 
 ### Setup
 Before running the application, the database file (used for `sqlite`) needs to be created.  Running the make command, `init_db`, will create the director and db file that will be used.  One can clean up the db file but running the make command `clean_db`.
