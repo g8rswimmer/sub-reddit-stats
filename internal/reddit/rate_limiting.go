@@ -4,8 +4,6 @@ import (
 	"net/http"
 	"strconv"
 	"time"
-
-	"github.com/g8rswimmer/sub-reddit-stats/internal/model"
 )
 
 const (
@@ -14,8 +12,8 @@ const (
 	rateLimitingReset     = "x-ratelimit-reset"
 )
 
-func rateLimiting(resp *http.Response) *model.RateLimiting {
-	return &model.RateLimiting{
+func rateLimiting(resp *http.Response) *RateLimiting {
+	return &RateLimiting{
 		Remaining: func() int {
 			r := resp.Header.Get(rateLimitingRemaining)
 			if len(r) == 0 {

@@ -5,7 +5,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/g8rswimmer/sub-reddit-stats/internal/model"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -16,7 +15,7 @@ func Test_rateLimiting(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want *model.RateLimiting
+		want *RateLimiting
 	}{
 		{
 			name: "success",
@@ -31,7 +30,7 @@ func Test_rateLimiting(t *testing.T) {
 					}(),
 				},
 			},
-			want: &model.RateLimiting{
+			want: &RateLimiting{
 				Remaining: 599,
 				Used:      1,
 				Reset:     247 * time.Second,
