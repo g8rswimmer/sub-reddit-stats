@@ -22,7 +22,7 @@ func (p *Listing) Store(ctx context.Context, listings []SubredditListing) error 
 	return nil
 }
 
-func (p *Listing) SubredditUps(ctx context.Context, subreddit string, limit int) ([]model.SubredditData, error) {
+func (p *Listing) SubredditUps(ctx context.Context, subreddit string, limit int) ([]SubredditListing, error) {
 	if limit <= 0 {
 		limit = defaultLimit
 	}
@@ -35,9 +35,9 @@ func (p *Listing) SubredditUps(ctx context.Context, subreddit string, limit int)
 	}
 	defer rows.Close()
 
-	listings := []model.SubredditData{}
+	listings := []SubredditListing{}
 	for rows.Next() {
-		data := model.SubredditData{}
+		data := SubredditListing{}
 		if err := rows.StructScan(&data); err != nil {
 			return nil, fmt.Errorf("listing ups row scan error: %w", err)
 		}

@@ -152,7 +152,7 @@ func TestPresister_SubredditUps(t *testing.T) {
 		name    string
 		seed    seed
 		args    args
-		want    []model.SubredditData
+		want    []SubredditListing
 		wantErr bool
 	}{
 		{
@@ -198,7 +198,7 @@ func TestPresister_SubredditUps(t *testing.T) {
 				subreddit: "funny",
 				limit:     5,
 			},
-			want: []model.SubredditData{
+			want: []SubredditListing{
 				{
 					ID:                  "t3_2bu4fzc",
 					Downs:               10,

@@ -5,13 +5,14 @@ import (
 	"errors"
 
 	"github.com/g8rswimmer/sub-reddit-stats/internal/convert"
+	"github.com/g8rswimmer/sub-reddit-stats/internal/datastore"
 	"github.com/g8rswimmer/sub-reddit-stats/internal/errorx"
 	"github.com/g8rswimmer/sub-reddit-stats/internal/model"
 	"github.com/g8rswimmer/sub-reddit-stats/internal/proto/redditv1"
 )
 
 type Fetcher interface {
-	SubredditUps(ctx context.Context, subreddit string, limit int) ([]model.SubredditData, error)
+	SubredditUps(ctx context.Context, subreddit string, limit int) ([]datastore.SubredditListing, error)
 	SubredditPosts(ctx context.Context, subreddit string, limit int) ([]model.SubredditPost, error)
 }
 
@@ -27,7 +28,7 @@ func (r *Reddit) SubredditMostUps(ctx context.Context, subreddit string, limit i
 	}
 	ups := make([]*redditv1.SubredditData, len(data))
 	for i, d := range data {
-		ups[i] = convert.SubredditDataToProto(d)
+		ups[i] = convert.SubredditListingToProto(d)
 	}
 	return ups, nil
 }

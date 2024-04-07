@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/g8rswimmer/sub-reddit-stats/internal/model"
+	"github.com/g8rswimmer/sub-reddit-stats/internal/datastore"
 	"github.com/g8rswimmer/sub-reddit-stats/internal/proto/redditv1"
 	"github.com/stretchr/testify/assert"
 	gomock "go.uber.org/mock/gomock"
@@ -30,7 +30,7 @@ func TestReddit_SubredditMostUps(t *testing.T) {
 			fields: fields{
 				Fetcher: func(ctrl *gomock.Controller) Fetcher {
 					m := NewMockFetcher(ctrl)
-					r := []model.SubredditData{
+					r := []datastore.SubredditListing{
 						{
 							Title:               "Registering my kid for kindergarten...Do you think they'd honor it? 😂",
 							Downs:               0,
