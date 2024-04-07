@@ -83,3 +83,65 @@ func TestReddit_SubredditMostUps(t *testing.T) {
 		})
 	}
 }
+
+func TestReddit_SubredditAuthorPosts(t *testing.T) {
+	type fields struct {
+		Fetcher func(ctrl *gomock.Controller) Fetcher
+	}
+	type args struct {
+		subreddit string
+		limit     int
+	}
+	tests := []struct {
+		name    string
+		fields  fields
+		args    args
+		want    []*redditv1.SubredditPost
+		wantErr bool
+	}{
+		{
+			name: "success",
+			fields: fields{
+				Fetcher: func(ctrl *gomock.Controller) Fetcher {
+					m := NewMockFetcher(ctrl)
+					r := []datastore.SubredditPost{
+						{
+							Author:         "aabbffgg",
+							AuthorFullname: "test_user",
+							Posts:          34,
+						},
+					}
+					m.EXPECT().SubredditPosts(gomock.Any(), "funny", 1).Return(r, nil)
+					return m
+				},
+			},
+			args: args{
+				subreddit: "funny",
+				limit:     1,
+			},
+			want: []*redditv1.SubredditPost{
+				{
+					Author:         "aabbffgg",
+					AuthorFullname: "test_user",
+					Posts:          34,
+				},
+			},
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			ctrl := gomock.NewController(t)
+
+			r := &Reddit{
+				Fetcher: tt.fields.Fetcher(ctrl),
+			}
+			got, err := r.SubredditAuthorPosts(context.Background(), tt.args.subreddit, tt.args.limit)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("Reddit.SubredditAuthorPosts() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			assert.Equal(t, tt.want, got)
+		})
+	}
+}
