@@ -35,3 +35,5 @@ const insertListing = `INSERT INTO listing (
 		`
 
 const listingUps = `SELECT * FROM listing WHERE SUBREDDIT = :subreddit ORDER BY UPS DESC LIMIT :limit`
+
+const listingAuthorPosts = `SELECT AUTHOR, AUTHOR_FULLNAME, COUNT(AUTHOR_FULLNAME) AS POSTS FROM listing WHERE SUBREDDIT = :subreddit GROUP BY AUTHOR_FULLNAME ORDER BY POSTS DESC LIMIT :limit`

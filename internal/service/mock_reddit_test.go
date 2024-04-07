@@ -40,6 +40,21 @@ func (m *MockManager) EXPECT() *MockManagerMockRecorder {
 	return m.recorder
 }
 
+// SubredditAuthorPosts mocks base method.
+func (m *MockManager) SubredditAuthorPosts(ctx context.Context, subreddit string, limit int) ([]*redditv1.SubredditPost, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SubredditAuthorPosts", ctx, subreddit, limit)
+	ret0, _ := ret[0].([]*redditv1.SubredditPost)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// SubredditAuthorPosts indicates an expected call of SubredditAuthorPosts.
+func (mr *MockManagerMockRecorder) SubredditAuthorPosts(ctx, subreddit, limit any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SubredditAuthorPosts", reflect.TypeOf((*MockManager)(nil).SubredditAuthorPosts), ctx, subreddit, limit)
+}
+
 // SubredditMostUps mocks base method.
 func (m *MockManager) SubredditMostUps(ctx context.Context, subreddit string, limit int) ([]*redditv1.SubredditData, error) {
 	m.ctrl.T.Helper()

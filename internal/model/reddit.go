@@ -37,3 +37,9 @@ type RateLimiting struct {
 	Used      int
 	Reset     time.Duration
 }
+
+type SubredditPost struct {
+	Author         string `json:"author" db:"AUTHOR"`
+	AuthorFullname string `json:"author_fullname" db:"AUTHOR_FULLNAME"`
+	Posts          int    `json:"posts" db:"POSTS"`
+}

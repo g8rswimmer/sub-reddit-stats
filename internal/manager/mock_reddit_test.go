@@ -40,6 +40,21 @@ func (m *MockFetcher) EXPECT() *MockFetcherMockRecorder {
 	return m.recorder
 }
 
+// SubredditPosts mocks base method.
+func (m *MockFetcher) SubredditPosts(ctx context.Context, subreddit string, limit int) ([]model.SubredditPost, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SubredditPosts", ctx, subreddit, limit)
+	ret0, _ := ret[0].([]model.SubredditPost)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// SubredditPosts indicates an expected call of SubredditPosts.
+func (mr *MockFetcherMockRecorder) SubredditPosts(ctx, subreddit, limit any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SubredditPosts", reflect.TypeOf((*MockFetcher)(nil).SubredditPosts), ctx, subreddit, limit)
+}
+
 // SubredditUps mocks base method.
 func (m *MockFetcher) SubredditUps(ctx context.Context, subreddit string, limit int) ([]model.SubredditData, error) {
 	m.ctrl.T.Helper()

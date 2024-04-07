@@ -16,6 +16,43 @@
     "application/json"
   ],
   "paths": {
+    "/subreddit/{subreddit}/posts": {
+      "get": {
+        "operationId": "RedditService_GetSubredditAuthorPosts",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetSubredditAuthorPostsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "subreddit",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "reddit.v1.RedditService"
+        ]
+      }
+    },
     "/subreddit/{subreddit}/ups": {
       "get": {
         "operationId": "RedditService_GetSubredditMostUps",
@@ -83,6 +120,18 @@
         }
       }
     },
+    "v1GetSubredditAuthorPostsResponse": {
+      "type": "object",
+      "properties": {
+        "author_posts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1SubredditPost"
+          }
+        }
+      }
+    },
     "v1GetSubredditMostUpsResponse": {
       "type": "object",
       "properties": {
@@ -131,6 +180,21 @@
         },
         "author_fullname": {
           "type": "string"
+        }
+      }
+    },
+    "v1SubredditPost": {
+      "type": "object",
+      "properties": {
+        "author_fullname": {
+          "type": "string"
+        },
+        "author": {
+          "type": "string"
+        },
+        "posts": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     }

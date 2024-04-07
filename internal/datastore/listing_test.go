@@ -278,3 +278,118 @@ func TestPresister_SubredditUps(t *testing.T) {
 		})
 	}
 }
+
+func TestListing_SubredditPosts(t *testing.T) {
+	type seed struct {
+		children []model.SubredditChild
+	}
+	type args struct {
+		subreddit string
+		limit     int
+	}
+	tests := []struct {
+		name    string
+		seed    seed
+		args    args
+		want    []model.SubredditPost
+		wantErr bool
+	}{
+		{
+			name: "success",
+			seed: seed{
+				children: []model.SubredditChild{
+					{
+						Kind: "t3",
+						Data: model.SubredditData{
+							ID:                  "t3_1bu4fza",
+							Downs:               1,
+							UpvoteRatio:         0.5,
+							Ups:                 2,
+							TotalAwardsReceived: 10,
+							Name:                "1bu4fzc",
+							Subreddit:           "funny",
+							Author:              "sjustice",
+							AuthorFullname:      "t2_bskdv",
+						},
+					},
+					{
+						Kind: "t3",
+						Data: model.SubredditData{
+							ID:                  "t3_2bu4fzb",
+							Downs:               10,
+							UpvoteRatio:         0.5,
+							Ups:                 2000,
+							TotalAwardsReceived: 10,
+							Name:                "2bu4fzc",
+							Subreddit:           "funny",
+							Author:              "sjustice",
+							AuthorFullname:      "t2_bskdv",
+						},
+					},
+					{
+						Kind: "t3",
+						Data: model.SubredditData{
+							ID:                  "t3_3bu4fzc",
+							Downs:               10,
+							UpvoteRatio:         0.5,
+							Ups:                 10,
+							TotalAwardsReceived: 10,
+							Name:                "3bu4fzc",
+							Subreddit:           "funny",
+							Author:              "sjustice",
+							AuthorFullname:      "t2_bskdv",
+						},
+					},
+					{
+						Kind: "t3",
+						Data: model.SubredditData{
+							ID:                  "t3_3bu4faa",
+							Downs:               10,
+							UpvoteRatio:         0.5,
+							Ups:                 10,
+							TotalAwardsReceived: 10,
+							Name:                "3bu4fzc",
+							Subreddit:           "funny",
+							Author:              "rjustice",
+							AuthorFullname:      "t2_bskdz",
+						},
+					},
+				},
+			},
+			args: args{
+				subreddit: "funny",
+				limit:     1,
+			},
+			want: []model.SubredditPost{
+				{
+					Author:         "sjustice",
+					AuthorFullname: "t2_bskdv",
+					Posts:          3,
+				},
+			},
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			db, err := DatabaseSetup()
+			assert.NoError(t, err)
+			defer db.Close()
+
+			p := &Listing{
+				DB: db,
+			}
+			if err := p.Store(context.Background(), tt.seed.children); (err != nil) != tt.wantErr {
+				t.Errorf("Presister.SubredditPosts() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+
+			got, err := p.SubredditPosts(context.Background(), tt.args.subreddit, tt.args.limit)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("Listing.SubredditPosts() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			assert.Equal(t, tt.want, got)
+		})
+	}
+}

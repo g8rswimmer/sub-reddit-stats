@@ -12,6 +12,12 @@ service RedditService {
 			get: "/subreddit/{subreddit}/ups"
 		};
 	}
+
+	rpc GetSubredditAuthorPosts(GetSubredditAuthorPostsRequest) returns (GetSubredditAuthorPostsResponse) {
+		option (google.api.http) = {
+			get: "/subreddit/{subreddit}/posts"
+		};
+	}
 }
 
 message GetSubredditMostUpsRequest {
@@ -35,4 +41,18 @@ message SubredditData {
 	string author = 9;
 	string author_fullname = 10;
    
+}
+
+message GetSubredditAuthorPostsRequest {
+    string subreddit = 1;
+    int32 limit = 2;
+}
+
+message GetSubredditAuthorPostsResponse {
+	repeated SubredditPost author_posts = 1;
+}
+message SubredditPost {
+	string author_fullname = 1;
+	string author = 2;
+	int32 posts = 3;
 }
