@@ -11,10 +11,13 @@ clean_db:
 	rm -r db
 
 migrate:
-	go run cmd/migration/*.go
+	go run cmd/migration/*.go -config=config.json
 
 daemon:
-	go run cmd/daemon/*.go
+	go run cmd/daemon/*.go -config=config.json
+
+server:
+	go run cmd/server/*.go -config=config.json
 
 proto_gen_go:
 	protoc -I . -I protos/ --go_out=./internal/proto --go-grpc_out=require_unimplemented_servers=false:./internal/proto $$(find protos/reddit -name "*.proto")

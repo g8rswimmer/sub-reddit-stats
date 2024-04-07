@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"errors"
+	"flag"
 	"fmt"
 	"log/slog"
 	"net"
@@ -12,6 +13,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/g8rswimmer/sub-reddit-stats/internal/config"
 	"github.com/g8rswimmer/sub-reddit-stats/internal/datastore"
 	"github.com/g8rswimmer/sub-reddit-stats/internal/manager"
 	"github.com/g8rswimmer/sub-reddit-stats/internal/proto/redditv1"
@@ -26,8 +28,17 @@ import (
 )
 
 func main() {
+	cfgFileName := flag.String("config", "", "config file for migration")
+	flag.Parse()
+
+	cfg, err := config.SettingFromFile(*cfgFileName)
+	if err != nil {
+		slog.Error("unable to load configuration settings", "error", err.Error())
+		panic(err)
+	}
+
 	slog.Info("starting server init...")
-	db, err := datastore.Open("./db/sqlite-database.db")
+	db, err := datastore.Open(cfg.Database.DataSource)
 	if err != nil {
 		panic(err)
 	}
@@ -48,14 +59,14 @@ func main() {
 	gServer := gRPCServer()
 	redditv1.RegisterRedditServiceServer(gServer, srv)
 
-	srvr, err := setUpHTTPServer(context.Background())
+	srvr, err := setUpHTTPServer(context.Background(), cfg.Server.HTTPPort, cfg.Server.GRPCPort)
 	if err != nil {
 		panic(err)
 	}
 
 	go func() {
 		slog.Info("starting gRPC server...")
-		if err := gRPCRun(gServer, 5050); !errors.Is(err, grpc.ErrServerStopped) && err != nil {
+		if err := gRPCRun(gServer, cfg.Server.GRPCPort); !errors.Is(err, grpc.ErrServerStopped) && err != nil {
 			panic(err)
 		}
 	}()
@@ -112,7 +123,7 @@ func gatewayMux() *runtime.ServeMux {
 	)
 }
 
-func setUpRouter(ctx context.Context) (*mux.Router, error) {
+func setUpRouter(ctx context.Context, port int) (*mux.Router, error) {
 	router := mux.NewRouter().StrictSlash(true)
 	rmux := gatewayMux()
 	router.PathPrefix("/").Handler(rmux)
@@ -134,21 +145,21 @@ func setUpRouter(ctx context.Context) (*mux.Router, error) {
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	}
 
-	if err := redditv1.RegisterRedditServiceHandlerFromEndpoint(ctx, rmux, fmt.Sprintf("localhost:%d", 5050), opts); err != nil {
+	if err := redditv1.RegisterRedditServiceHandlerFromEndpoint(ctx, rmux, fmt.Sprintf("localhost:%d", port), opts); err != nil {
 		return nil, fmt.Errorf("reddit service handler from endpoint err: %w", err)
 	}
 
 	return router, nil
 }
 
-func setUpHTTPServer(ctx context.Context) (*http.Server, error) {
-	router, err := setUpRouter(ctx)
+func setUpHTTPServer(ctx context.Context, httpPort, grpcPort int) (*http.Server, error) {
+	router, err := setUpRouter(ctx, grpcPort)
 	if err != nil {
 		return nil, err
 	}
 
 	return &http.Server{
-		Addr:              fmt.Sprintf(":%d", 8080),
+		Addr:              fmt.Sprintf(":%d", httpPort),
 		ReadHeaderTimeout: 10 * time.Second,
 		ReadTimeout:       20 * time.Second,
 		WriteTimeout:      20 * time.Second,

@@ -1,0 +1,15 @@
+{
+    "database": {
+        "data_source": "./db/sqlite-database.db"
+    },
+    "reddit": {
+        "client_id": "your client ID",
+        "client_secret": "your client secret",
+        "base_url": "https://oauth.reddit.com",
+        "subreddit": "funny"
+    },
+    "server": {
+        "grpc_port": 5050,
+        "http_port": 8080
+    }
+}
