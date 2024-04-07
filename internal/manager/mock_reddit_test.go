@@ -14,7 +14,6 @@ import (
 	reflect "reflect"
 
 	datastore "github.com/g8rswimmer/sub-reddit-stats/internal/datastore"
-	model "github.com/g8rswimmer/sub-reddit-stats/internal/model"
 	gomock "go.uber.org/mock/gomock"
 )
 
@@ -42,10 +41,10 @@ func (m *MockFetcher) EXPECT() *MockFetcherMockRecorder {
 }
 
 // SubredditPosts mocks base method.
-func (m *MockFetcher) SubredditPosts(ctx context.Context, subreddit string, limit int) ([]model.SubredditPost, error) {
+func (m *MockFetcher) SubredditPosts(ctx context.Context, subreddit string, limit int) ([]datastore.SubredditPost, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "SubredditPosts", ctx, subreddit, limit)
-	ret0, _ := ret[0].([]model.SubredditPost)
+	ret0, _ := ret[0].([]datastore.SubredditPost)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

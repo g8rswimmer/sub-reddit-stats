@@ -6,7 +6,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/g8rswimmer/sub-reddit-stats/internal/model"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -273,7 +272,7 @@ func TestListing_SubredditPosts(t *testing.T) {
 		name    string
 		seed    seed
 		args    args
-		want    []model.SubredditPost
+		want    []SubredditPost
 		wantErr bool
 	}{
 		{
@@ -330,7 +329,7 @@ func TestListing_SubredditPosts(t *testing.T) {
 				subreddit: "funny",
 				limit:     1,
 			},
-			want: []model.SubredditPost{
+			want: []SubredditPost{
 				{
 					Author:         "sjustice",
 					AuthorFullname: "t2_bskdv",

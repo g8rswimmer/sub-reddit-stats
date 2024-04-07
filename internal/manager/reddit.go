@@ -7,13 +7,12 @@ import (
 	"github.com/g8rswimmer/sub-reddit-stats/internal/convert"
 	"github.com/g8rswimmer/sub-reddit-stats/internal/datastore"
 	"github.com/g8rswimmer/sub-reddit-stats/internal/errorx"
-	"github.com/g8rswimmer/sub-reddit-stats/internal/model"
 	"github.com/g8rswimmer/sub-reddit-stats/internal/proto/redditv1"
 )
 
 type Fetcher interface {
 	SubredditUps(ctx context.Context, subreddit string, limit int) ([]datastore.SubredditListing, error)
-	SubredditPosts(ctx context.Context, subreddit string, limit int) ([]model.SubredditPost, error)
+	SubredditPosts(ctx context.Context, subreddit string, limit int) ([]datastore.SubredditPost, error)
 }
 
 type Reddit struct {

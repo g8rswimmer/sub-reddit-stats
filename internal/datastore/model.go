@@ -12,3 +12,9 @@ type SubredditListing struct {
 	Author              string  `db:"AUTHOR"`
 	AuthorFullname      string  `db:"AUTHOR_FULLNAME"`
 }
+
+type SubredditPost struct {
+	Author         string `json:"author" db:"AUTHOR"`
+	AuthorFullname string `json:"author_fullname" db:"AUTHOR_FULLNAME"`
+	Posts          int    `json:"posts" db:"POSTS"`
+}

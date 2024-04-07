@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/g8rswimmer/sub-reddit-stats/internal/model"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -47,7 +46,7 @@ func (p *Listing) SubredditUps(ctx context.Context, subreddit string, limit int)
 	return listings, nil
 }
 
-func (p *Listing) SubredditPosts(ctx context.Context, subreddit string, limit int) ([]model.SubredditPost, error) {
+func (p *Listing) SubredditPosts(ctx context.Context, subreddit string, limit int) ([]SubredditPost, error) {
 	if limit <= 0 {
 		limit = defaultLimit
 	}
@@ -60,9 +59,9 @@ func (p *Listing) SubredditPosts(ctx context.Context, subreddit string, limit in
 	}
 	defer rows.Close()
 
-	posts := []model.SubredditPost{}
+	posts := []SubredditPost{}
 	for rows.Next() {
-		data := model.SubredditPost{}
+		data := SubredditPost{}
 		if err := rows.StructScan(&data); err != nil {
 			return nil, fmt.Errorf("listing posts row scan error: %w", err)
 		}
