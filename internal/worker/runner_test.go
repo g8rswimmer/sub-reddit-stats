@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/g8rswimmer/sub-reddit-stats/internal/datastore"
-	model "github.com/g8rswimmer/sub-reddit-stats/internal/model"
+	reddit "github.com/g8rswimmer/sub-reddit-stats/internal/reddit"
 	"github.com/stretchr/testify/assert"
 	gomock "go.uber.org/mock/gomock"
 )
@@ -30,14 +30,14 @@ func TestRunner_process(t *testing.T) {
 			fields: fields{
 				Lister: func(ctrl *gomock.Controller) RedditLister {
 					m := NewMockRedditLister(ctrl)
-					r := &model.RedditListing{
+					r := &reddit.Listing{
 						Kind: "Listing",
-						Data: model.RedditListingData{
+						Data: reddit.ListingData{
 							After: "t3_1bv8ijk",
-							Children: []model.SubredditChild{
+							Children: []reddit.SubredditChild{
 								{
 									Kind: "t3",
-									Data: model.SubredditData{
+									Data: reddit.SubredditData{
 										Title:               "Registering my kid for kindergarten...Do you think they'd honor it? 😂",
 										Downs:               0,
 										UpvoteRatio:         1.0,
@@ -51,7 +51,7 @@ func TestRunner_process(t *testing.T) {
 								},
 							},
 						},
-						RateLimiting: &model.RateLimiting{
+						RateLimiting: &reddit.RateLimiting{
 							Remaining: 1,
 							Used:      1,
 							Reset:     569 * time.Second,

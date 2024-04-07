@@ -14,7 +14,6 @@ import (
 	reflect "reflect"
 
 	datastore "github.com/g8rswimmer/sub-reddit-stats/internal/datastore"
-	model "github.com/g8rswimmer/sub-reddit-stats/internal/model"
 	reddit "github.com/g8rswimmer/sub-reddit-stats/internal/reddit"
 	gomock "go.uber.org/mock/gomock"
 )
@@ -80,14 +79,14 @@ func (m *MockRedditLister) EXPECT() *MockRedditListerMockRecorder {
 }
 
 // SubredditListingNew mocks base method.
-func (m *MockRedditLister) SubredditListingNew(ctx context.Context, subreddit string, params ...reddit.Params) (*model.RedditListing, error) {
+func (m *MockRedditLister) SubredditListingNew(ctx context.Context, subreddit string, params ...reddit.Params) (*reddit.Listing, error) {
 	m.ctrl.T.Helper()
 	varargs := []any{ctx, subreddit}
 	for _, a := range params {
 		varargs = append(varargs, a)
 	}
 	ret := m.ctrl.Call(m, "SubredditListingNew", varargs...)
-	ret0, _ := ret[0].(*model.RedditListing)
+	ret0, _ := ret[0].(*reddit.Listing)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

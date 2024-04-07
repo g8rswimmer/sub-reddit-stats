@@ -5,8 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-
-	"github.com/g8rswimmer/sub-reddit-stats/internal/model"
 )
 
 const (
@@ -23,7 +21,7 @@ type Client struct {
 	HTTPClient *http.Client
 }
 
-func (c *Client) SubredditListingNew(ctx context.Context, subreddit string, params ...Params) (*model.RedditListing, error) {
+func (c *Client) SubredditListingNew(ctx context.Context, subreddit string, params ...Params) (*Listing, error) {
 	ep := fmt.Sprintf(subredditListingEndpoint, subreddit)
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, c.BaseURL+ep, nil)
 	if err != nil {
@@ -53,12 +51,11 @@ func (c *Client) SubredditListingNew(ctx context.Context, subreddit string, para
 		}
 	}
 
-	listing := &model.RedditListing{}
+	listing := &Listing{}
 	if err := json.NewDecoder(resp.Body).Decode(listing); err != nil {
 		return nil, fmt.Errorf("subreddit listing response json decode: %w", err)
 	}
-	rl := model.RateLimiting(*rateLimit)
-	listing.RateLimiting = &rl
+	listing.RateLimiting = rateLimit
 
 	return listing, nil
 }

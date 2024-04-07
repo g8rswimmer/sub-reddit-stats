@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/g8rswimmer/sub-reddit-stats/internal/datastore"
-	"github.com/g8rswimmer/sub-reddit-stats/internal/model"
 	"github.com/g8rswimmer/sub-reddit-stats/internal/reddit"
 )
 
@@ -25,7 +24,7 @@ type Presister interface {
 }
 
 type RedditLister interface {
-	SubredditListingNew(ctx context.Context, subreddit string, params ...reddit.Params) (*model.RedditListing, error)
+	SubredditListingNew(ctx context.Context, subreddit string, params ...reddit.Params) (*reddit.Listing, error)
 }
 
 type Runner struct {
@@ -76,7 +75,7 @@ func (r *Runner) process(subreddit string) (time.Duration, error) {
 	return backoff, nil
 }
 
-func (r *Runner) presistSubredditListings(children []model.SubredditChild) error {
+func (r *Runner) presistSubredditListings(children []reddit.SubredditChild) error {
 	ctx, cancel := context.WithTimeout(context.Background(), ctxTO)
 	defer cancel()
 	listings := make([]datastore.SubredditListing, len(children))
@@ -86,7 +85,7 @@ func (r *Runner) presistSubredditListings(children []model.SubredditChild) error
 	return r.Presister.Store(ctx, listings)
 }
 
-func (r *Runner) handleSubredditListing(subreddit string) (*model.RedditListing, error) {
+func (r *Runner) handleSubredditListing(subreddit string) (*reddit.Listing, error) {
 	retries := maxRetries
 	for retries > 0 {
 		var httpErr *reddit.HTTPError
@@ -113,7 +112,7 @@ func (r *Runner) handleSubredditListing(subreddit string) (*model.RedditListing,
 	}
 	return nil, errRetrieveListing
 }
-func (r *Runner) subredditListings(subreddit string) (*model.RedditListing, error) {
+func (r *Runner) subredditListings(subreddit string) (*reddit.Listing, error) {
 	params := []reddit.Params{reddit.WithLimit(limit)}
 	if len(r.after) != 0 {
 		params = append(params, reddit.WithAfter(r.after))

@@ -9,7 +9,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/g8rswimmer/sub-reddit-stats/internal/model"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -31,7 +30,7 @@ func TestClient_SubredditListingNew(t *testing.T) {
 		name    string
 		fields  fields
 		args    args
-		want    *model.RedditListing
+		want    *Listing
 		wantErr bool
 	}{
 		{
@@ -220,14 +219,14 @@ func TestClient_SubredditListingNew(t *testing.T) {
 			args: args{
 				subreddit: "funny",
 			},
-			want: &model.RedditListing{
+			want: &Listing{
 				Kind: "Listing",
-				Data: model.RedditListingData{
+				Data: ListingData{
 					After: "t3_1bv8ijk",
-					Children: []model.SubredditChild{
+					Children: []SubredditChild{
 						{
 							Kind: "t3",
-							Data: model.SubredditData{
+							Data: SubredditData{
 								Title:               "Registering my kid for kindergarten...Do you think they'd honor it? 😂",
 								Downs:               0,
 								UpvoteRatio:         1.0,
@@ -242,7 +241,7 @@ func TestClient_SubredditListingNew(t *testing.T) {
 						},
 					},
 				},
-				RateLimiting: &model.RateLimiting{
+				RateLimiting: &RateLimiting{
 					Remaining: 599,
 					Used:      1,
 					Reset:     569 * time.Second,
