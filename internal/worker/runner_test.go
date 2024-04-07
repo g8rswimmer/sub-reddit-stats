@@ -4,6 +4,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/g8rswimmer/sub-reddit-stats/internal/datastore"
 	model "github.com/g8rswimmer/sub-reddit-stats/internal/model"
 	"github.com/stretchr/testify/assert"
 	gomock "go.uber.org/mock/gomock"
@@ -61,20 +62,17 @@ func TestRunner_process(t *testing.T) {
 				},
 				Presister: func(ctrl *gomock.Controller) Presister {
 					m := NewMockPresister(ctrl)
-					children := []model.SubredditChild{
+					children := []datastore.SubredditListing{
 						{
-							Kind: "t3",
-							Data: model.SubredditData{
-								Title:               "Registering my kid for kindergarten...Do you think they'd honor it? 😂",
-								Downs:               0,
-								UpvoteRatio:         1.0,
-								Ups:                 1,
-								TotalAwardsReceived: 0,
-								Name:                "t3_1bv8ijk",
-								Subreddit:           "funny",
-								ID:                  "1bv8ijk",
-								Author:              "dbzcat",
-							},
+							Title:               "Registering my kid for kindergarten...Do you think they'd honor it? 😂",
+							Downs:               0,
+							UpvoteRatio:         1.0,
+							Ups:                 1,
+							TotalAwardsReceived: 0,
+							Name:                "t3_1bv8ijk",
+							Subreddit:           "funny",
+							ID:                  "1bv8ijk",
+							Author:              "dbzcat",
 						},
 					}
 					m.EXPECT().Store(gomock.Any(), children).Return(nil)

@@ -14,12 +14,7 @@ type Listing struct {
 	DB *sqlx.DB
 }
 
-func (p *Listing) Store(ctx context.Context, children []model.SubredditChild) error {
-
-	listings := make([]model.SubredditData, len(children))
-	for i := range children {
-		listings[i] = children[i].Data
-	}
+func (p *Listing) Store(ctx context.Context, listings []SubredditListing) error {
 
 	if _, err := p.DB.NamedExecContext(ctx, insertListing, listings); err != nil {
 		return fmt.Errorf("insert of listings %d to table: %w", len(listings), err)

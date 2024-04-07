@@ -13,6 +13,7 @@ import (
 	context "context"
 	reflect "reflect"
 
+	datastore "github.com/g8rswimmer/sub-reddit-stats/internal/datastore"
 	model "github.com/g8rswimmer/sub-reddit-stats/internal/model"
 	reddit "github.com/g8rswimmer/sub-reddit-stats/internal/reddit"
 	gomock "go.uber.org/mock/gomock"
@@ -42,7 +43,7 @@ func (m *MockPresister) EXPECT() *MockPresisterMockRecorder {
 }
 
 // Store mocks base method.
-func (m *MockPresister) Store(ctx context.Context, children []model.SubredditChild) error {
+func (m *MockPresister) Store(ctx context.Context, children []datastore.SubredditListing) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Store", ctx, children)
 	ret0, _ := ret[0].(error)

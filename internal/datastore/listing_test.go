@@ -12,35 +12,32 @@ import (
 
 func TestPresister_Store(t *testing.T) {
 	type args struct {
-		children []model.SubredditChild
+		children []SubredditListing
 	}
 	tests := []struct {
 		name    string
 		args    args
-		want    []model.SubredditData
+		want    []SubredditListing
 		wantErr bool
 	}{
 		{
 			name: "simple",
 			args: args{
-				children: []model.SubredditChild{
+				children: []SubredditListing{
 					{
-						Kind: "t3",
-						Data: model.SubredditData{
-							ID:                  "t3_1bu4fzc",
-							Downs:               1,
-							UpvoteRatio:         0.5,
-							Ups:                 2,
-							TotalAwardsReceived: 10,
-							Name:                "1bu4fzc",
-							Subreddit:           "funny",
-							Author:              "sjustice",
-							AuthorFullname:      "t2_bskdv",
-						},
+						ID:                  "t3_1bu4fzc",
+						Downs:               1,
+						UpvoteRatio:         0.5,
+						Ups:                 2,
+						TotalAwardsReceived: 10,
+						Name:                "1bu4fzc",
+						Subreddit:           "funny",
+						Author:              "sjustice",
+						AuthorFullname:      "t2_bskdv",
 					},
 				},
 			},
-			want: []model.SubredditData{
+			want: []SubredditListing{
 				{
 					ID:                  "t3_1bu4fzc",
 					Downs:               1,
@@ -58,38 +55,32 @@ func TestPresister_Store(t *testing.T) {
 		{
 			name: "conflict",
 			args: args{
-				children: []model.SubredditChild{
+				children: []SubredditListing{
 					{
-						Kind: "t3",
-						Data: model.SubredditData{
-							ID:                  "t3_1bu4fzc",
-							Downs:               1,
-							UpvoteRatio:         0.5,
-							Ups:                 2,
-							TotalAwardsReceived: 10,
-							Name:                "1bu4fzc",
-							Subreddit:           "funny",
-							Author:              "sjustice",
-							AuthorFullname:      "t2_bskdv",
-						},
+						ID:                  "t3_1bu4fzc",
+						Downs:               1,
+						UpvoteRatio:         0.5,
+						Ups:                 2,
+						TotalAwardsReceived: 10,
+						Name:                "1bu4fzc",
+						Subreddit:           "funny",
+						Author:              "sjustice",
+						AuthorFullname:      "t2_bskdv",
 					},
 					{
-						Kind: "t3",
-						Data: model.SubredditData{
-							ID:                  "t3_1bu4fzc",
-							Downs:               10,
-							UpvoteRatio:         0.5,
-							Ups:                 2000,
-							TotalAwardsReceived: 10,
-							Name:                "1bu4fzc",
-							Subreddit:           "funny",
-							Author:              "sjustice",
-							AuthorFullname:      "t2_bskdv",
-						},
+						ID:                  "t3_1bu4fzc",
+						Downs:               10,
+						UpvoteRatio:         0.5,
+						Ups:                 2000,
+						TotalAwardsReceived: 10,
+						Name:                "1bu4fzc",
+						Subreddit:           "funny",
+						Author:              "sjustice",
+						AuthorFullname:      "t2_bskdv",
 					},
 				},
 			},
-			want: []model.SubredditData{
+			want: []SubredditListing{
 				{
 					ID:                  "t3_1bu4fzc",
 					Downs:               10,
@@ -127,10 +118,10 @@ func TestPresister_Store(t *testing.T) {
 			assert.NoError(t, err)
 			defer rows.Close()
 
-			expected := []model.SubredditData{}
+			expected := []SubredditListing{}
 
 			for rows.Next() {
-				data := model.SubredditData{}
+				data := SubredditListing{}
 				err := rows.StructScan(&data)
 				assert.NoError(t, err)
 				expected = append(expected, data)
@@ -151,7 +142,7 @@ func TestPresister_Store(t *testing.T) {
 
 func TestPresister_SubredditUps(t *testing.T) {
 	type seed struct {
-		children []model.SubredditChild
+		children []SubredditListing
 	}
 	type args struct {
 		subreddit string
@@ -167,48 +158,39 @@ func TestPresister_SubredditUps(t *testing.T) {
 		{
 			name: "success",
 			seed: seed{
-				children: []model.SubredditChild{
+				children: []SubredditListing{
 					{
-						Kind: "t3",
-						Data: model.SubredditData{
-							ID:                  "t3_1bu4fzc",
-							Downs:               1,
-							UpvoteRatio:         0.5,
-							Ups:                 2,
-							TotalAwardsReceived: 10,
-							Name:                "1bu4fzc",
-							Subreddit:           "funny",
-							Author:              "sjustice",
-							AuthorFullname:      "t2_bskdv",
-						},
+						ID:                  "t3_1bu4fzc",
+						Downs:               1,
+						UpvoteRatio:         0.5,
+						Ups:                 2,
+						TotalAwardsReceived: 10,
+						Name:                "1bu4fzc",
+						Subreddit:           "funny",
+						Author:              "sjustice",
+						AuthorFullname:      "t2_bskdv",
 					},
 					{
-						Kind: "t3",
-						Data: model.SubredditData{
-							ID:                  "t3_2bu4fzc",
-							Downs:               10,
-							UpvoteRatio:         0.5,
-							Ups:                 2000,
-							TotalAwardsReceived: 10,
-							Name:                "2bu4fzc",
-							Subreddit:           "funny",
-							Author:              "sjustice",
-							AuthorFullname:      "t2_bskdv",
-						},
+						ID:                  "t3_2bu4fzc",
+						Downs:               10,
+						UpvoteRatio:         0.5,
+						Ups:                 2000,
+						TotalAwardsReceived: 10,
+						Name:                "2bu4fzc",
+						Subreddit:           "funny",
+						Author:              "sjustice",
+						AuthorFullname:      "t2_bskdv",
 					},
 					{
-						Kind: "t3",
-						Data: model.SubredditData{
-							ID:                  "t3_3bu4fzc",
-							Downs:               10,
-							UpvoteRatio:         0.5,
-							Ups:                 10,
-							TotalAwardsReceived: 10,
-							Name:                "3bu4fzc",
-							Subreddit:           "funny",
-							Author:              "sjustice",
-							AuthorFullname:      "t2_bskdv",
-						},
+						ID:                  "t3_3bu4fzc",
+						Downs:               10,
+						UpvoteRatio:         0.5,
+						Ups:                 10,
+						TotalAwardsReceived: 10,
+						Name:                "3bu4fzc",
+						Subreddit:           "funny",
+						Author:              "sjustice",
+						AuthorFullname:      "t2_bskdv",
 					},
 				},
 			},
@@ -281,7 +263,7 @@ func TestPresister_SubredditUps(t *testing.T) {
 
 func TestListing_SubredditPosts(t *testing.T) {
 	type seed struct {
-		children []model.SubredditChild
+		children []SubredditListing
 	}
 	type args struct {
 		subreddit string
@@ -297,62 +279,50 @@ func TestListing_SubredditPosts(t *testing.T) {
 		{
 			name: "success",
 			seed: seed{
-				children: []model.SubredditChild{
+				children: []SubredditListing{
 					{
-						Kind: "t3",
-						Data: model.SubredditData{
-							ID:                  "t3_1bu4fza",
-							Downs:               1,
-							UpvoteRatio:         0.5,
-							Ups:                 2,
-							TotalAwardsReceived: 10,
-							Name:                "1bu4fzc",
-							Subreddit:           "funny",
-							Author:              "sjustice",
-							AuthorFullname:      "t2_bskdv",
-						},
+						ID:                  "t3_1bu4fza",
+						Downs:               1,
+						UpvoteRatio:         0.5,
+						Ups:                 2,
+						TotalAwardsReceived: 10,
+						Name:                "1bu4fzc",
+						Subreddit:           "funny",
+						Author:              "sjustice",
+						AuthorFullname:      "t2_bskdv",
 					},
 					{
-						Kind: "t3",
-						Data: model.SubredditData{
-							ID:                  "t3_2bu4fzb",
-							Downs:               10,
-							UpvoteRatio:         0.5,
-							Ups:                 2000,
-							TotalAwardsReceived: 10,
-							Name:                "2bu4fzc",
-							Subreddit:           "funny",
-							Author:              "sjustice",
-							AuthorFullname:      "t2_bskdv",
-						},
+						ID:                  "t3_2bu4fzb",
+						Downs:               10,
+						UpvoteRatio:         0.5,
+						Ups:                 2000,
+						TotalAwardsReceived: 10,
+						Name:                "2bu4fzc",
+						Subreddit:           "funny",
+						Author:              "sjustice",
+						AuthorFullname:      "t2_bskdv",
 					},
 					{
-						Kind: "t3",
-						Data: model.SubredditData{
-							ID:                  "t3_3bu4fzc",
-							Downs:               10,
-							UpvoteRatio:         0.5,
-							Ups:                 10,
-							TotalAwardsReceived: 10,
-							Name:                "3bu4fzc",
-							Subreddit:           "funny",
-							Author:              "sjustice",
-							AuthorFullname:      "t2_bskdv",
-						},
+						ID:                  "t3_3bu4fzc",
+						Downs:               10,
+						UpvoteRatio:         0.5,
+						Ups:                 10,
+						TotalAwardsReceived: 10,
+						Name:                "3bu4fzc",
+						Subreddit:           "funny",
+						Author:              "sjustice",
+						AuthorFullname:      "t2_bskdv",
 					},
 					{
-						Kind: "t3",
-						Data: model.SubredditData{
-							ID:                  "t3_3bu4faa",
-							Downs:               10,
-							UpvoteRatio:         0.5,
-							Ups:                 10,
-							TotalAwardsReceived: 10,
-							Name:                "3bu4fzc",
-							Subreddit:           "funny",
-							Author:              "rjustice",
-							AuthorFullname:      "t2_bskdz",
-						},
+						ID:                  "t3_3bu4faa",
+						Downs:               10,
+						UpvoteRatio:         0.5,
+						Ups:                 10,
+						TotalAwardsReceived: 10,
+						Name:                "3bu4fzc",
+						Subreddit:           "funny",
+						Author:              "rjustice",
+						AuthorFullname:      "t2_bskdz",
 					},
 				},
 			},

@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/g8rswimmer/sub-reddit-stats/internal/datastore"
 	"github.com/g8rswimmer/sub-reddit-stats/internal/errorx"
 	"github.com/g8rswimmer/sub-reddit-stats/internal/model"
 	"github.com/g8rswimmer/sub-reddit-stats/internal/reddit"
@@ -21,7 +22,7 @@ const (
 var errRetrieveListing = errors.New("error retrieving listing")
 
 type Presister interface {
-	Store(ctx context.Context, children []model.SubredditChild) error
+	Store(ctx context.Context, children []datastore.SubredditListing) error
 }
 
 type RedditLister interface {
@@ -79,7 +80,11 @@ func (r *Runner) process(subreddit string) (time.Duration, error) {
 func (r *Runner) presistSubredditListings(children []model.SubredditChild) error {
 	ctx, cancel := context.WithTimeout(context.Background(), ctxTO)
 	defer cancel()
-	return r.Presister.Store(ctx, children)
+	listings := make([]datastore.SubredditListing, len(children))
+	for i, c := range children {
+		listings[i] = datastore.SubredditListing(c.Data)
+	}
+	return r.Presister.Store(ctx, listings)
 }
 
 func (r *Runner) handleSubredditListing(subreddit string) (*model.RedditListing, error) {
