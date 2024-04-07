@@ -9,10 +9,13 @@ import (
 
 const defaultLimit = 5
 
+// Listing will handle datastore interface for the subreddit listing
+// data.
 type Listing struct {
 	DB *sqlx.DB
 }
 
+// Store will store the data listing from a subreddit
 func (p *Listing) Store(ctx context.Context, listings []SubredditListing) error {
 
 	if _, err := p.DB.NamedExecContext(ctx, insertListing, listings); err != nil {
@@ -21,6 +24,8 @@ func (p *Listing) Store(ctx context.Context, listings []SubredditListing) error 
 	return nil
 }
 
+// SubredditUps will return the subreddit posts with the most ups (up votes).
+// The limit is optional and if none are provided, a default will be used.
 func (p *Listing) SubredditUps(ctx context.Context, subreddit string, limit int) ([]SubredditListing, error) {
 	if limit <= 0 {
 		limit = defaultLimit
@@ -46,6 +51,8 @@ func (p *Listing) SubredditUps(ctx context.Context, subreddit string, limit int)
 	return listings, nil
 }
 
+// SubredditPosts will return the authors with the most posts for a given subreddit.
+// The limit is optional and if none are provided, a default will be used.
 func (p *Listing) SubredditPosts(ctx context.Context, subreddit string, limit int) ([]SubredditPost, error) {
 	if limit <= 0 {
 		limit = defaultLimit

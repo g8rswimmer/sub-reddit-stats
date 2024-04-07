@@ -4,23 +4,28 @@ import (
 	"time"
 )
 
+// Listing is the subreddit listing response.
+// Rate limiting is include from the HTTP response
 type Listing struct {
 	Kind         string      `json:"kind"`
 	Data         ListingData `json:"data"`
 	RateLimiting *RateLimiting
 }
 
+// ListingData contains the subreddit data
 type ListingData struct {
 	After    string           `json:"after"`
 	Before   string           `json:"before"`
 	Children []SubredditChild `json:"children"`
 }
 
+// SubredditChild has the listing post data
 type SubredditChild struct {
 	Kind string        `json:"kind"`
 	Data SubredditData `json:"data"`
 }
 
+// SubredditData has the post data
 type SubredditData struct {
 	Title               string  `json:"title"`
 	Downs               int     `json:"downs"`

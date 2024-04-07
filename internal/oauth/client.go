@@ -22,6 +22,7 @@ type client struct {
 	deviceID     string
 }
 
+// AccessToken will retreve an access token from the reddit oauth server
 func (c *client) AccessToken(ctx context.Context) (*accessResponse, error) {
 	data := url.Values{}
 	data.Set("grant_type", grantType)

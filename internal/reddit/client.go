@@ -11,16 +11,20 @@ const (
 	subredditListingEndpoint = "/r/%s/new"
 )
 
+// Authorizer will set the authrorization headers in the HTTP request
 type Authorizer interface {
 	AddAuthorization(req *http.Request)
 }
 
+// Client is used to interface with the reddit APIs.
 type Client struct {
 	BaseURL    string
 	Auth       Authorizer
 	HTTPClient *http.Client
 }
 
+// SubredditListingNew will retrieve the subreddit listings.  This is from the reddit APIs with documentation.
+// https://www.reddit.com/dev/api/#GET_new
 func (c *Client) SubredditListingNew(ctx context.Context, subreddit string, params ...Params) (*Listing, error) {
 	ep := fmt.Sprintf(subredditListingEndpoint, subreddit)
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, c.BaseURL+ep, nil)

@@ -15,6 +15,7 @@ const (
 	timeout = 2 * time.Second
 )
 
+// Manager will handle retrieving and setting oauth access tokens.
 type Manager struct {
 	accessClient   *client
 	mutex          sync.RWMutex
@@ -22,6 +23,9 @@ type Manager struct {
 	done           chan struct{}
 }
 
+// NewManager will create a new manager for an oauth token.
+// A side effect is a go routine will be started to retrieve tokens
+// Calling Shutdown will exit the go routine to prevent thread leeking
 func NewManager(ctx context.Context, options ...Option) (*Manager, error) {
 	cfg := loadDefaultConfig()
 	for _, opt := range options {
@@ -71,6 +75,7 @@ func (m *Manager) run() {
 	exp := time.Duration(m.accessResponse.ExpiresIn) * time.Second
 	exp /= 2
 	refresh := time.NewTimer(exp)
+	slog.Info("oauth manager token set", "expire", exp.String())
 
 	go func() {
 		select {
@@ -105,6 +110,7 @@ func (m *Manager) setToken(ar *accessResponse) time.Duration {
 	return exp
 }
 
+// AddAuthorization will set the authorization token in the HTTP request
 func (m *Manager) AddAuthorization(req *http.Request) {
 	m.mutex.RLock()
 	defer m.mutex.RUnlock()
@@ -112,6 +118,8 @@ func (m *Manager) AddAuthorization(req *http.Request) {
 	req.Header.Add("Authorization", auth)
 }
 
+// Shutdown will stop the manager from retrieving token.
+// It is recommended to use this to prevent thread leeking
 func (m *Manager) Shutdown() {
 	close(m.done)
 }

@@ -5,6 +5,8 @@ import (
 	"github.com/g8rswimmer/sub-reddit-stats/internal/proto/redditv1"
 )
 
+// SubredditPostToProto will convert the database subreddit port model to the
+// protobuf message.
 func SubredditPostToProto(srp datastore.SubredditPost) *redditv1.SubredditPost {
 	return &redditv1.SubredditPost{
 		AuthorFullname: srp.AuthorFullname,

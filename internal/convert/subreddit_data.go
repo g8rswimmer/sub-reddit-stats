@@ -5,6 +5,8 @@ import (
 	"github.com/g8rswimmer/sub-reddit-stats/internal/proto/redditv1"
 )
 
+// SubredditListingToProto will convert the datastore subreddit listing data to
+// the protobuf message.
 func SubredditListingToProto(srl datastore.SubredditListing) *redditv1.SubredditData {
 	return &redditv1.SubredditData{
 		Id:                  srl.ID,

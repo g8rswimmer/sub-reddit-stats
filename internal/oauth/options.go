@@ -12,6 +12,7 @@ const (
 	clientSecretKey = "CLIENT_SECRET"
 )
 
+// Option are oauth manager configuratoin options
 type Option func(*config)
 
 type config struct {
@@ -34,12 +35,16 @@ func loadDefaultConfig() *config {
 	}
 }
 
+// WithBaseURL will set the base URL for the oauth manager.  This is
+// used to retrieve tokens
 func WithBaseURL(baseURL string) Option {
 	return func(cfg *config) {
 		cfg.baseURL = baseURL
 	}
 }
 
+// WithCredentials the client ID and secret that will be used to
+// obtain access tokens
 func WithCredentials(clientID, clientSecret string) Option {
 	return func(cfg *config) {
 		cfg.clientID = clientID
@@ -47,12 +52,16 @@ func WithCredentials(clientID, clientSecret string) Option {
 	}
 }
 
+// WithHTTPClient will set the HTTP client that will be used to
+// make token callouts
 func WithHTTPClient(client *http.Client) Option {
 	return func(cfg *config) {
 		cfg.httpClient = client
 	}
 }
 
+// WithDeviceID is the randome device ID used when calling
+// the oauth endpoint
 func WithDeviceID(id string) Option {
 	return func(cfg *config) {
 		cfg.deviceID = id

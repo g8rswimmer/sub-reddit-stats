@@ -6,6 +6,7 @@ import (
 	"os"
 )
 
+// SettingFromFile will read the configuration from a JSON file.
 func SettingFromFile(filename string) (*Settings, error) {
 	f, err := os.Open(filename)
 	if err != nil {

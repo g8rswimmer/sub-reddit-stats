@@ -19,14 +19,17 @@ const (
 
 var errRetrieveListing = errors.New("error retrieving listing")
 
+// Presister will store the subreddit listing data
 type Presister interface {
 	Store(ctx context.Context, children []datastore.SubredditListing) error
 }
 
+// RedditLister will handle the calls to reddit API for subreddit listing
 type RedditLister interface {
 	SubredditListingNew(ctx context.Context, subreddit string, params ...reddit.Params) (*reddit.Listing, error)
 }
 
+// Runner will gather and store subreddit data
 type Runner struct {
 	Lister    RedditLister
 	Presister Presister
@@ -34,6 +37,8 @@ type Runner struct {
 	after     string
 }
 
+// Start will create a thread to retrieve subreddit listings
+// Use Shutdown to ensure that thread leekage does not occur
 func (r *Runner) Start(subreddit string) <-chan error {
 	to := time.NewTimer(10 * time.Millisecond)
 	r.done = make(chan struct{})
@@ -123,6 +128,7 @@ func (r *Runner) subredditListings(subreddit string) (*reddit.Listing, error) {
 	return r.Lister.SubredditListingNew(ctx, subreddit, params...)
 }
 
+// Shutdown will stop the worker for retrieving subreddit listings
 func (r *Runner) Shutdown() {
 	close(r.done)
 	slog.Info("sutting down the runner")

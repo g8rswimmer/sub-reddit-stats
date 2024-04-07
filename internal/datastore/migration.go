@@ -32,10 +32,12 @@ const (
 	authorPostsIdx = `CREATE INDEX IF NOT EXISTS author_posts_idx ON author (POSTS);`
 )
 
+// Migration is to migrate the database to the table and index configuration.
 type Migration struct {
 	DB *sql.DB
 }
 
+// Apply will execute the queries to create tables and indexes.
 func (m *Migration) Apply(ctx context.Context) error {
 	if _, err := m.DB.ExecContext(ctx, listingTbl); err != nil {
 		return fmt.Errorf("table creation error: %w", err)
