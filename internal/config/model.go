@@ -20,6 +20,7 @@ type Reddit struct {
 	ClientID     string `json:"client_id"`
 	ClientSecret string `json:"client_secret"`
 	BaseURL      string `json:"base_url"`
+	OAuthURL     string `json:"oauth_url"`
 	Subreddit    string `json:"subreddit"`
 }
 

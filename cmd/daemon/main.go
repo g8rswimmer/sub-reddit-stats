@@ -34,7 +34,7 @@ func main() {
 	}
 	defer db.Close()
 
-	manager, err := oauth.NewManager(context.Background(), oauth.WithCredentials(cfg.Reddit.ClientID, cfg.Reddit.ClientSecret))
+	manager, err := oauth.NewManager(context.Background(), oauth.WithCredentials(cfg.Reddit.ClientID, cfg.Reddit.ClientSecret), oauth.WithBaseURL(cfg.Reddit.OAuthURL))
 	if err != nil {
 		slog.Error("unable to run oauth manager", "error", err.Error())
 		panic(err)
