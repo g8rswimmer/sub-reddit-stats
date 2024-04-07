@@ -22,7 +22,23 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type RedditServiceClient interface {
+	// GetSubredditMostUps retrives the subreddit posts that have the most ups (up votes)
+	//
+	// # Responses:
+	// | HTTP Status | gRPC Code | Description |
+	// | --- | --- | --- |
+	// | 200 | `codes.OK` | subreddit posts with the most ups |
+	// | 400 | `codes.InvalidArgument` | `subreddit` parameters is empty |
+	// | 500 | `codes.Internal` | service was unable to process the request do to an interanl error |
 	GetSubredditMostUps(ctx context.Context, in *GetSubredditMostUpsRequest, opts ...grpc.CallOption) (*GetSubredditMostUpsResponse, error)
+	// GetSubredditAuthorPosts retrives the authors that have the most posts for a subreddit
+	//
+	// # Responses:
+	// | HTTP Status | gRPC Code | Description |
+	// | --- | --- | --- |
+	// | 200 | `codes.OK` | subreddit author's posts |
+	// | 400 | `codes.InvalidArgument` | `subreddit` parameters is empty |
+	// | 500 | `codes.Internal` | service was unable to process the request do to an interanl error |
 	GetSubredditAuthorPosts(ctx context.Context, in *GetSubredditAuthorPostsRequest, opts ...grpc.CallOption) (*GetSubredditAuthorPostsResponse, error)
 }
 
@@ -56,7 +72,23 @@ func (c *redditServiceClient) GetSubredditAuthorPosts(ctx context.Context, in *G
 // All implementations should embed UnimplementedRedditServiceServer
 // for forward compatibility
 type RedditServiceServer interface {
+	// GetSubredditMostUps retrives the subreddit posts that have the most ups (up votes)
+	//
+	// # Responses:
+	// | HTTP Status | gRPC Code | Description |
+	// | --- | --- | --- |
+	// | 200 | `codes.OK` | subreddit posts with the most ups |
+	// | 400 | `codes.InvalidArgument` | `subreddit` parameters is empty |
+	// | 500 | `codes.Internal` | service was unable to process the request do to an interanl error |
 	GetSubredditMostUps(context.Context, *GetSubredditMostUpsRequest) (*GetSubredditMostUpsResponse, error)
+	// GetSubredditAuthorPosts retrives the authors that have the most posts for a subreddit
+	//
+	// # Responses:
+	// | HTTP Status | gRPC Code | Description |
+	// | --- | --- | --- |
+	// | 200 | `codes.OK` | subreddit author's posts |
+	// | 400 | `codes.InvalidArgument` | `subreddit` parameters is empty |
+	// | 500 | `codes.Internal` | service was unable to process the request do to an interanl error |
 	GetSubredditAuthorPosts(context.Context, *GetSubredditAuthorPostsRequest) (*GetSubredditAuthorPostsResponse, error)
 }
 

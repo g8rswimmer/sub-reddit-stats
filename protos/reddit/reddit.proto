@@ -6,13 +6,30 @@ option go_package = "./redditv1;redditv1";
 
 import "google/api/annotations.proto";
 
+// RedditService is a service to retrive information based on reddit data
 service RedditService {
+	// GetSubredditMostUps retrives the subreddit posts that have the most ups (up votes)
+	//
+	// # Responses:
+	// | HTTP Status | gRPC Code | Description |
+	// | --- | --- | --- |
+	// | 200 | `codes.OK` | subreddit posts with the most ups |
+	// | 400 | `codes.InvalidArgument` | `subreddit` parameters is empty |
+	// | 500 | `codes.Internal` | service was unable to process the request do to an interanl error | 
     rpc GetSubredditMostUps(GetSubredditMostUpsRequest) returns (GetSubredditMostUpsResponse) {
 		option (google.api.http) = {
 			get: "/subreddit/{subreddit}/ups"
 		};
 	}
 
+	// GetSubredditAuthorPosts retrives the authors that have the most posts for a subreddit
+	//
+	// # Responses:
+	// | HTTP Status | gRPC Code | Description |
+	// | --- | --- | --- |
+	// | 200 | `codes.OK` | subreddit author's posts |
+	// | 400 | `codes.InvalidArgument` | `subreddit` parameters is empty |
+	// | 500 | `codes.Internal` | service was unable to process the request do to an interanl error | 
 	rpc GetSubredditAuthorPosts(GetSubredditAuthorPostsRequest) returns (GetSubredditAuthorPostsResponse) {
 		option (google.api.http) = {
 			get: "/subreddit/{subreddit}/posts"
@@ -21,38 +38,57 @@ service RedditService {
 }
 
 message GetSubredditMostUpsRequest {
-    string subreddit = 1;
+    // the subreddit name, which does not include the `/r`
+	string subreddit = 1;
+	// the limit of the response, optional
     int32 limit = 2;
 }
 
 message GetSubredditMostUpsResponse {
-    repeated SubredditData subreddit_posts = 1;
+    // a list of subreddit posts that have the most up votes
+	repeated SubredditData subreddit_posts = 1;
 }
 
 message SubredditData {
+	// the title of the subreddit post
 	string title = 1;
+	// number of down votes
 	int32 downs = 2;
+	// the upvote rator
 	float upvote_ratio = 3;
+	// number of up votes
 	int32 ups = 4;
-	int32 total_awardsReceived = 5;
+	// total number of awards reeceived
+	int32 total_awards_received = 5;
+	// name of the subredit
 	string name = 6;
+	// subreddit name like funny
 	string subreddit = 7;
+	// id of the subreddit
 	string id = 8;
+	// author username
 	string author = 9;
+	// author id
 	string author_fullname = 10;
    
 }
 
 message GetSubredditAuthorPostsRequest {
-    string subreddit = 1;
+    // the subreddit name, which does not include the `/r`
+	string subreddit = 1;
+	// the limit of the response, optional
     int32 limit = 2;
 }
 
 message GetSubredditAuthorPostsResponse {
+	// a list of authors with the number of post in the subreddit
 	repeated SubredditPost author_posts = 1;
 }
 message SubredditPost {
+	// author id
 	string author_fullname = 1;
+	// author username
 	string author = 2;
+	// number of posts
 	int32 posts = 3;
 }

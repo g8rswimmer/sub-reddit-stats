@@ -18,6 +18,8 @@
   "paths": {
     "/subreddit/{subreddit}/posts": {
       "get": {
+        "summary": "GetSubredditAuthorPosts retrives the authors that have the most posts for a subreddit",
+        "description": "# Responses:\n| HTTP Status | gRPC Code | Description |\n| --- | --- | --- |\n| 200 | `codes.OK` | subreddit author's posts |\n| 400 | `codes.InvalidArgument` | `subreddit` parameters is empty |\n| 500 | `codes.Internal` | service was unable to process the request do to an interanl error |",
         "operationId": "RedditService_GetSubredditAuthorPosts",
         "responses": {
           "200": {
@@ -36,12 +38,14 @@
         "parameters": [
           {
             "name": "subreddit",
+            "description": "the subreddit name, which does not include the `/r`",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
             "name": "limit",
+            "description": "the limit of the response, optional",
             "in": "query",
             "required": false,
             "type": "integer",
@@ -55,6 +59,8 @@
     },
     "/subreddit/{subreddit}/ups": {
       "get": {
+        "summary": "GetSubredditMostUps retrives the subreddit posts that have the most ups (up votes)",
+        "description": "# Responses:\n| HTTP Status | gRPC Code | Description |\n| --- | --- | --- |\n| 200 | `codes.OK` | subreddit posts with the most ups |\n| 400 | `codes.InvalidArgument` | `subreddit` parameters is empty |\n| 500 | `codes.Internal` | service was unable to process the request do to an interanl error |",
         "operationId": "RedditService_GetSubredditMostUps",
         "responses": {
           "200": {
@@ -73,12 +79,14 @@
         "parameters": [
           {
             "name": "subreddit",
+            "description": "the subreddit name, which does not include the `/r`",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
             "name": "limit",
+            "description": "the limit of the response, optional",
             "in": "query",
             "required": false,
             "type": "integer",
@@ -128,7 +136,8 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/v1SubredditPost"
-          }
+          },
+          "title": "a list of authors with the number of post in the subreddit"
         }
       }
     },
@@ -140,7 +149,8 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/v1SubredditData"
-          }
+          },
+          "title": "a list of subreddit posts that have the most up votes"
         }
       }
     },
@@ -148,38 +158,48 @@
       "type": "object",
       "properties": {
         "title": {
-          "type": "string"
+          "type": "string",
+          "title": "the title of the subreddit post"
         },
         "downs": {
           "type": "integer",
-          "format": "int32"
+          "format": "int32",
+          "title": "number of down votes"
         },
         "upvote_ratio": {
           "type": "number",
-          "format": "float"
+          "format": "float",
+          "title": "the upvote rator"
         },
         "ups": {
           "type": "integer",
-          "format": "int32"
+          "format": "int32",
+          "title": "number of up votes"
         },
-        "total_awardsReceived": {
+        "total_awards_received": {
           "type": "integer",
-          "format": "int32"
+          "format": "int32",
+          "title": "total number of awards reeceived"
         },
         "name": {
-          "type": "string"
+          "type": "string",
+          "title": "name of the subredit"
         },
         "subreddit": {
-          "type": "string"
+          "type": "string",
+          "title": "subreddit name like funny"
         },
         "id": {
-          "type": "string"
+          "type": "string",
+          "title": "id of the subreddit"
         },
         "author": {
-          "type": "string"
+          "type": "string",
+          "title": "author username"
         },
         "author_fullname": {
-          "type": "string"
+          "type": "string",
+          "title": "author id"
         }
       }
     },
@@ -187,14 +207,17 @@
       "type": "object",
       "properties": {
         "author_fullname": {
-          "type": "string"
+          "type": "string",
+          "title": "author id"
         },
         "author": {
-          "type": "string"
+          "type": "string",
+          "title": "author username"
         },
         "posts": {
           "type": "integer",
-          "format": "int32"
+          "format": "int32",
+          "title": "number of posts"
         }
       }
     }
