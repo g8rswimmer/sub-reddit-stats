@@ -1,0 +1,50 @@
+{
+	"info": {
+		"_postman_id": "f7379b2f-1af2-4323-8efb-377a1b5a5577",
+		"name": "Subreddit Stats",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4921589"
+	},
+	"item": [
+		{
+			"name": "Get Ups",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/subreddit/funny/ups",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"subreddit",
+						"funny",
+						"ups"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Author Posts",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/subreddit/funny/posts",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"subreddit",
+						"funny",
+						"posts"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
