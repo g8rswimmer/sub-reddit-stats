@@ -73,6 +73,10 @@ The swagger documentation for the service can be found at:
 http://[host]/docs
 ```
 
+The `collections` folder has the postman collection for the HTTP requests.
+
+For gRPC postman requests, refer to this [documentation](https://learning.postman.com/docs/sending-requests/grpc/grpc-request-interface/).
+
 #### Configuration
 There is a configuration file that is used for server, example `config-tmpl.json`.
 
